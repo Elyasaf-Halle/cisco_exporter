@@ -5,7 +5,6 @@ type EnvironmentItem struct {
 	Status       string
 	OK           bool
 	IsPowerUsage bool
-	Power        float64
 	IsTemp       bool
-	Temperature  float64
+	Value        float64
 }

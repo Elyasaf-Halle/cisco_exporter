@@ -33,7 +33,7 @@ func (c *environmentCollector) Parse(ostype string, output string) ([]Environmen
 				Name:         strings.TrimSpace(matches[1] + " " + matches[2]),
 				IsPowerUsage: false,
 				IsTemp:       true,
-				Temperature:  util.Str2float64(matches[3]),
+				Value:        util.Str2float64(matches[3]),
 			}
 			items = append(items, x)
 		} else if matches := powerRegexp[ostype].FindStringSubmatch(line); matches != nil {
@@ -51,8 +51,8 @@ func (c *environmentCollector) Parse(ostype string, output string) ([]Environmen
 			x := EnvironmentItem{
 				Name:         strings.TrimSpace(matches[1] + " " + matches[2]),
 				IsPowerUsage: true,
-				Power:        util.Str2float64(matches[3]),
 				IsTemp:       false,
+				Value:        util.Str2float64(matches[3]),
 				OK:           ok,
 			}
 			items = append(items, x)
