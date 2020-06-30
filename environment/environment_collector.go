@@ -14,13 +14,15 @@ const prefix string = "cisco_environment_"
 var (
 	temperaturesDesc *prometheus.Desc
 	powerSupplyDesc  *prometheus.Desc
+	powerUsageDesc   *prometheus.Desc
 )
 
 func init() {
 	l := []string{"target", "item"}
-	temperaturesDesc = prometheus.NewDesc(prefix+"sensor_temp", "Sensor temperatures", l, nil)
 	l = append(l, "status")
+	temperaturesDesc = prometheus.NewDesc(prefix+"sensor_temp", "Sensor temperatures", l, nil)
 	powerSupplyDesc = prometheus.NewDesc(prefix+"power_up", "Status of power supplies (1 OK, 0 Something is wrong)", l, nil)
+	powerUsageDesc = prometheus.NewDesc(prefix+"power_usage", "Current power usage in watts", l, nil)
 }
 
 type environmentCollector struct {
@@ -55,6 +57,8 @@ func (c *environmentCollector) Collect(client *rpc.Client, ch chan<- prometheus.
 		l := append(labelValues, item.Name)
 		if item.IsTemp {
 			ch <- prometheus.MustNewConstMetric(temperaturesDesc, prometheus.GaugeValue, float64(item.Temperature), l...)
+		} else if item.IsPowerUsage {
+			ch <- prometheus.MustNewConstMetric(powerUsageDesc, prometheus.GaugeValue, float64(item.Power), l...)
 		} else {
 			val := 0
 			if item.OK {
