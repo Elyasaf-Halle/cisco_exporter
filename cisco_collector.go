@@ -6,10 +6,10 @@ import (
 
 	"sync"
 
+	"github.com/bixxus/cisco_exporter/environment"
 	"github.com/lwlcom/cisco_exporter/bgp"
 	"github.com/lwlcom/cisco_exporter/collector"
 	"github.com/lwlcom/cisco_exporter/connector"
-	"github.com/lwlcom/cisco_exporter/environment"
 	"github.com/lwlcom/cisco_exporter/facts"
 	"github.com/lwlcom/cisco_exporter/interfaces"
 	"github.com/lwlcom/cisco_exporter/optics"
