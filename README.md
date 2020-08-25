@@ -33,12 +33,12 @@ optics | Optical signals (tx/rx) | NX-OS/IOS XE/IOS
 
 ## Install
 ```bash
-go get -u github.com/bixxus/cisco_exporter
+go get -u github.com/a83r/cisco_exporter
 ```
 
 ## Usage
 ```bash
-./cisco_exporter -ssh.targets="host1.example.com,host2.example.com:2233,172.16.0.1" -ssh.keyfile=cisco_exporter
+./cisco_exporter -ssh.targets="host1.example.com,host2.example.com:2233,172.16.0.1" 
 ```
 
 ## Third Party Components
