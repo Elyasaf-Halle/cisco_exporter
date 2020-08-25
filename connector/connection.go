@@ -20,7 +20,7 @@ var (
 	lock         = &sync.Mutex{}
 )
 
-func config(user, keyFile string, legacyCiphers bool, timeout int) (*ssh.ClientConfig, error) {
+func config(user, password string, legacyCiphers bool, timeout int) (*ssh.ClientConfig, error) {
 	lock.Lock()
 	defer lock.Unlock()
 
@@ -28,14 +28,14 @@ func config(user, keyFile string, legacyCiphers bool, timeout int) (*ssh.ClientC
 		return cachedConfig, nil
 	}
 
-	pk, err := loadPublicKeyFile(keyFile)
+	bufpassword, err := ioutil.ReadFile("/etc/prometheus/ciscoexporter_secrets")
 	if err != nil {
 		return nil, err
 	}
-
+	password = string (bufpassword)
 	cachedConfig = &ssh.ClientConfig{
 		User:            user,
-		Auth:            []ssh.AuthMethod{pk},
+		Auth:            []ssh.AuthMethod{ssh.Password(password),},
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 		Timeout:         time.Duration(timeout) * time.Second,
 	}
@@ -48,7 +48,7 @@ func config(user, keyFile string, legacyCiphers bool, timeout int) (*ssh.ClientC
 }
 
 // NewSSSHConnection connects to device
-func NewSSSHConnection(host, user, keyFile string, legacyCiphers bool, timeout int, batchSize int) (*SSHConnection, error) {
+func NewSSSHConnection(host, user, password string, legacyCiphers bool, timeout int, batchSize int) (*SSHConnection, error) {
 	if !strings.Contains(host, ":") {
 		host = host + ":22"
 	}
@@ -58,7 +58,7 @@ func NewSSSHConnection(host, user, keyFile string, legacyCiphers bool, timeout i
 		legacyCiphers: legacyCiphers,
 		batchSize:     batchSize,
 	}
-	err := c.Connect(user, keyFile, timeout)
+	err := c.Connect(user, password, timeout)
 	if err != nil {
 		return nil, err
 	}
@@ -78,8 +78,8 @@ type SSHConnection struct {
 }
 
 // Connect connects to the device
-func (c *SSHConnection) Connect(user, keyFile string, timeout int) error {
-	config, err := config(user, keyFile, c.legacyCiphers, timeout)
+func (c *SSHConnection) Connect(user, password string, timeout int) error {
+	config, err := config(user, password, c.legacyCiphers, timeout)
 	if err != nil {
 		return err
 	}

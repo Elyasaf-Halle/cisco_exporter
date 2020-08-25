@@ -20,7 +20,7 @@ var (
 	metricsPath       = flag.String("web.telemetry-path", "/metrics", "Path under which to expose metrics.")
 	sshHosts          = flag.String("ssh.targets", "", "SSH Hosts to scrape")
 	sshUsername       = flag.String("ssh.user", "cisco_exporter", "Username to use for SSH connection")
-	sshKeyFile        = flag.String("ssh.keyfile", "", "Key file to use for SSH connection")
+	sshPassword       = flag.String("ssh.password", "", "Password file to use for SSH connection")
 	sshTimeout        = flag.Int("ssh.timeout", 5, "Timeout to use for SSH connection")
 	sshBatchSize      = flag.Int("ssh.batch-size", 10000, "The SSH response batch size")
 	debug             = flag.Bool("debug", false, "Show verbose debug output in log")

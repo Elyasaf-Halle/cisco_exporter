@@ -3,17 +3,15 @@ package main
 import (
 	"strings"
 	"time"
-
 	"sync"
-
-	"github.com/bixxus/cisco_exporter/environment"
-	"github.com/lwlcom/cisco_exporter/bgp"
-	"github.com/lwlcom/cisco_exporter/collector"
-	"github.com/lwlcom/cisco_exporter/connector"
-	"github.com/lwlcom/cisco_exporter/facts"
-	"github.com/lwlcom/cisco_exporter/interfaces"
-	"github.com/lwlcom/cisco_exporter/optics"
-	"github.com/lwlcom/cisco_exporter/rpc"
+	"cisco_exporter/environment"
+	"cisco_exporter/bgp"
+	"cisco_exporter/collector"
+	"cisco_exporter/connector"
+	"cisco_exporter/facts"
+	"cisco_exporter/interfaces"
+	"cisco_exporter/optics"
+	"cisco_exporter/rpc"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/common/log"
 )
@@ -99,7 +97,7 @@ func (c *ciscoCollector) collectForHost(host string, ch chan<- prometheus.Metric
 		ch <- prometheus.MustNewConstMetric(scrapeDurationDesc, prometheus.GaugeValue, time.Since(t).Seconds(), l...)
 	}()
 
-	conn, err := connector.NewSSSHConnection(host, *sshUsername, *sshKeyFile, *legacyCiphers, *sshTimeout, *sshBatchSize)
+	conn, err := connector.NewSSSHConnection(host, *sshUsername, *sshPassword, *legacyCiphers, *sshTimeout, *sshBatchSize)
 	if err != nil {
 		log.Errorln(err)
 		ch <- prometheus.MustNewConstMetric(upDesc, prometheus.GaugeValue, 0, l...)

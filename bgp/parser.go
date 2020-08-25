@@ -4,8 +4,8 @@ import (
 	"errors"
 	"regexp"
 
-	"github.com/lwlcom/cisco_exporter/rpc"
-	"github.com/lwlcom/cisco_exporter/util"
+	"cisco_exporter/rpc"
+	"cisco_exporter/util"
 )
 
 // Parse parses cli output and tries to find bgp sessions with related data
